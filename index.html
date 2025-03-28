@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #d38fcd;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            text-align: center;
+            margin-top: 20px;
+        }
+        main {
+            width: 60%; /* Restrict main content to center */
+            margin: 20px auto;
+        }
+        .song-block {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+        .song-block h2 {
+            margin: 0;
+            text-align: center;
+        }
+        .song-image {
+            display: none; /* Hidden by default */
+            margin-top: 10px;
+            text-align: center;
+        }
+        .song-image img {
+            width: 150px;
+            height: 150px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .song-details {
+            display: none; /* Hidden by default */
+            margin-top: 10px;
+            text-align: center; /* Center text inside the details */
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #ad2f98;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            margin: 10px;
+        }
+        .button:hover {
+            background-color: #ad2f98;
+        }
+    </style>
+    <script>
+        // Toggle visibility of details and image for the clicked song block
+        function toggleDetails(pos) {
+            const details = document.getElementById("details-" + pos);
+            const image = document.getElementById("image-" + pos);
+            if (details.style.display === "none" || details.style.display === "") {
+                details.style.display = "block";
+                image.style.display = "block";
+            } else {
+                details.style.display = "none";
+                image.style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1 style="color: white;">Top 50 Songs</h1> <!-- Title styled in white -->
+        <div>
+            <a href="/artists_charts" class="button">Artists Charts</a>
+            <a href="/genre" class="button">Genre</a>
+        </div>
+    </header>
+    <main>
+        {% for song in songs %}
+        <div class="song-block" onclick="toggleDetails({{ loop.index }})">
+            <h2>#{{ song['POS'] }}: {{ song['TITLE'] }}</h2>
+            <div class="song-image" id="image-{{ loop.index }}">
+                <img src="/static/song_{{ loop.index }}.jpg" alt="Song Image">
+            </div>
+            <div class="song-details" id="details-{{ loop.index }}">
+                <p><strong>Artist:</strong> {{ song['ARTIST'] }}</p>
+                <p><strong>Genre:</strong> {{ song['GENRE'] }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </main>
+    <footer>
+        <p style="text-align: center;">© 2024 Music Charts</p>
+    </footer>
+</body>
+</html>
