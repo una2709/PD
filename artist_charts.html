@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artists Charts</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f5;
+        }
+        header {
+            background-color: rgba(211, 143, 205, 1); /* Match header color with bar chart color */
+            padding: 20px;
+            text-align: center;
+            color: white;
+            font-size: 24px;
+        }
+        nav {
+            margin-top: 10px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: rgba(173, 47, 152, 1); /* Match button color with bar border color */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: rgba(138, 37, 122, 1); /* Slightly darker pink for hover effect */
+        }
+        .chart-container {
+            width: 80%;
+            margin: 20px auto;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: rgba(211, 143, 205, 1); /* Footer same as header */
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Artists Charts</h1>
+        <nav>
+            <a href="/" class="button">Back to Main Page</a>
+        </nav>
+    </header>
+    <main>
+        <div class="chart-container">
+            <canvas id="artistChart"></canvas>
+        </div>
+    </main>
+    <footer>
+        <p>© 2024 Music Charts</p>
+    </footer>
+    <script>
+        const labels = {{ labels | safe }};
+        const values = {{ values | safe }};
+        const ctx = document.getElementById('artistChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Number of Songs',
+                    data: values,
+                    backgroundColor: 'rgba(211, 143, 205, 1)',
+                    borderColor: 'rgba(173, 47, 152, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
