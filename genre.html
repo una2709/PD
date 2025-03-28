@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genre</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        .chart-container {
+            width: 38%; /* Keep chart size manageable */
+            margin: 0 auto;
+        }
+        .back-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #ad2f98; /* Button in dark pink */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+        .back-button:hover {
+            background-color: #9d2688; /* Slightly darker pink on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Genre Distribution</h1>
+    <div class="chart-container">
+        <canvas id="genreChart"></canvas>
+    </div>
+    <a href="/" class="back-button">Go Back</a>
+    <script>
+        // Data from Flask
+        const labels = {{ labels | safe }};
+        const values = {{ values | safe }};
+
+        // Add genre counts to the labels for better visibility
+        const enrichedLabels = labels.map((label, index) => `${label} (${values[index]} songs)`);
+
+        // Create the pie chart with different shades of pink
+        const ctx = document.getElementById('genreChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: enrichedLabels, // Enrich labels with genre counts
+                datasets: [{
+                    data: values,
+                    backgroundColor: [
+                        'rgba(255, 182, 193, 0.8)',   // Light Pink
+                        'rgba(255, 105, 180, 0.8)',   // Hot Pink
+                        'rgba(255, 20, 147, 0.8)',    // Deep Pink
+                        'rgba(231, 84, 128, 0.8)',    // Carnation Pink
+                        'rgba(245, 183, 217, 0.8)',   // Orchid Pink
+                        'rgba(255, 153, 204, 0.8)',   // Pale Pink
+                        'rgba(250, 128, 114, 0.8)',   // Salmon Pink
+                        'rgba(255, 192, 203, 0.8)',   // Pink
+                        'rgba(255, 174, 185, 0.8)',   // Cotton Candy Pink
+                        'rgba(255, 128, 172, 0.8)',   // Flamingo Pink
+                        'rgba(247, 143, 167, 0.8)',   // Rose Pink
+                        'rgba(255, 92, 141, 0.8)',    // Bubblegum Pink
+                        'rgba(255, 160, 176, 0.8)',   // Blush Pink
+                        'rgba(255, 147, 196, 0.8)',   // Mauve Pink
+                        'rgba(255, 120, 190, 0.8)'    // Watermelon Pink
+
+                    ],
+                    borderColor: [
+                        'rgba(255, 182, 193, 1)',   
+                        'rgba(255, 105, 180, 1)',   
+                        'rgba(255, 20, 147, 1)',     
+                        'rgba(231, 84, 128, 1)',    
+                        'rgba(245, 183, 217, 1)',   
+                        'rgba(255, 153, 204, 1)',  
+                        'rgba(250, 128, 114, 1)',  
+                        'rgba(255, 192, 203, 1)',  
+                        'rgba(255, 174, 185, 1)',   
+                        'rgba(255, 128, 172, 1)',   
+                        'rgba(247, 143, 167, 1)',   
+                        'rgba(255, 92, 141, 1)',    
+                        'rgba(255, 160, 176, 1)',  
+                        'rgba(255, 147, 196, 1)',   
+                        'rgba(255, 120, 190, 1)'    
+
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top' // Position the legend at the top
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                const genre = tooltipItem.label.split(' ')[0]; // Extract genre name
+                                const value = tooltipItem.raw; // Extract count of songs
+                                return `${genre}: ${value} songs`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
